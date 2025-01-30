@@ -1,12 +1,11 @@
-import axios from "axios";
 import { useState } from "react";
-import Card from "../../common/Card";
+import useFetch from "../../hooks/useFetch";
+
+import Card from "../../components/Card";
 
 const Dashboard = () => {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { data: results, error, loading, setError, fetchData } = useFetch();
 
   const api_key = import.meta.env.VITE_BOOKS_KEY;
 
@@ -15,55 +14,29 @@ const Dashboard = () => {
       setError("Please, write an author or book");
       return;
     }
-
-    setError("");
-    setLoading(true);
-    setResults([]);
-
-    try {
-      const titleResponse = await axios.get(
-        `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${api_key}`,
-        { headers: { Accept: "application/json" } }
-      );
-
-      if (!titleResponse.ok) {
-        setError("Ocurrio un error");
-      }
-      console.log(titleResponse);
-
-      if (titleResponse.data.items) {
-        const titles = Array.isArray(titleResponse.data.items)
-          ? titleResponse.data.items
-          : [titleResponse.data.items];
-        setLoading(false);
-        setError("");
-        console.log("hola");
-        setResults(titles);
-      } else {
-        setLoading(false);
-        setError("no se encontro nada");
-        setResults([]);
-      }
-    } catch (error) {
-      setError("There was a problem searching. Please try again");
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${api_key}`;
+    fetchData(url);
+    setQuery("");
   };
 
   return (
     <>
-      <div className="min-h-screen w-screen bg-main-gradient bg-no-repeat bg-cover bg-center ">
-        <div className="flex align-center justify-center pt-12">
+      <div className="min-h-screen w-screen bg-bg-color">
+        <div className="flex align-center justify-evenly pt-12 ">
           <input
             type="text"
-            placeholder="search"
-            className="rounded-md p-1"
+            placeholder="Search"
+            className="rounded-md p-1 cursor-pointer ring-1 ring-main-color focus:ring-1 focus:outline-second-color"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
-          <button onClick={handleSearch}>search</button>
+          <button
+            onClick={handleSearch}
+            className="bg-btn-color text-slate-50 focus:outline-0 hover:border-third-color"
+          >
+            Search
+          </button>
         </div>
         <div>
           {loading && <p>Cargando...</p>}

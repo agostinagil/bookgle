@@ -5,15 +5,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        "main-color": "#fc9945",
-        "second-color": "#ff2a83",
-        "second-color-darker": "#f12379",
-        "third-color": "#fd725b",
+        "main-color": "#ff9b5e",
+        "second-color": "#fd725b",
+        "third-color": "#ffe0c5",
+        "third-color-darker": "#f12379",
         "btn-color": "#fe4475",
         "btn-color-darker": "#ee4571",
         "title-black": "#242424",
         "subtitle-black": "#2a2a2a",
         "card-bg": "#fffafa",
+        "bg-color": "#FEF3E7",
       },
       backgroundImage: {
         "main-gradient":
