@@ -22,7 +22,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="min-h-screen w-screen bg-bg-color">
-        <div className="flex align-center justify-evenly pt-12 ">
+        <div className="flex align-center justify-evenly pt-24 ">
           <input
             type="text"
             placeholder="Search"
