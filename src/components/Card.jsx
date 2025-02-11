@@ -2,11 +2,11 @@
 import { useNavigate } from "react-router-dom";
 import noImg from "../assets/no-img.png";
 
-const Card = ({ res }) => {
+const Card = ({ book }) => {
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    navigate(`/book/${res.id}`);
+    navigate(`/book/${book.id}`);
   };
 
   return (
@@ -16,7 +16,7 @@ const Card = ({ res }) => {
     >
       <div className="h-[130px] mt-2 sm:h-[150px] sm:mt-3">
         <img
-          src={res.volumeInfo.imageLinks?.thumbnail || noImg}
+          src={book.volumeInfo.imageLinks?.thumbnail || noImg}
           alt="Book cover"
           className="mx-auto rounded-md h-full shadow-book"
         />
@@ -27,14 +27,14 @@ const Card = ({ res }) => {
           id="titulo"
           className="text-base text-title-black font-semibold text-center px-1 line-clamp-2 cursor-default sm:text-lg sm:px-2"
         >
-          {res.volumeInfo.title}
+          {book.volumeInfo.title}
         </p>
         <p
           id="author"
           className="text-center text-xs  text-subtitle-black mt-2 mb-2 line-clamp-1 cursor-default sm:text-sm sm:mt-1"
         >
-          {res.volumeInfo.authors
-            ? `by ${res.volumeInfo.authors}`
+          {book.volumeInfo.authors
+            ? `by ${book.volumeInfo.authors}`
             : "authors not found"}
         </p>
       </div>

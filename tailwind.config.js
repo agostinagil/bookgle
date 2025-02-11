@@ -15,6 +15,7 @@ export default {
         "subtitle-black": "#2a2a2a",
         "card-bg": "#fffafa",
         "bg-color": "#FEF3E7",
+        "link-color": "#646cff",
         divisor: "#eeeeee",
       },
       backgroundImage: {
