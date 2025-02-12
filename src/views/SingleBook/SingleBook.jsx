@@ -8,7 +8,7 @@ const SingleBook = () => {
   const { data, setError, error } = useFetch(
     id ? `https://www.googleapis.com/books/v1/volumes/${id}` : ""
   );
-  const plainText = data[0]?.volumeInfo?.description.replace(/<[^>]*>?/gm, "");
+  const plainText = data[0]?.volumeInfo?.description?.replace(/<[^>]*>?/gm, "");
   const info = data[0]?.volumeInfo;
   const price = data[0]?.saleInfo?.listPrice?.amount;
   const currency = data[0]?.saleInfo?.listPrice?.currencyCode;
@@ -73,10 +73,16 @@ const SingleBook = () => {
                 <Divisor />
 
                 <div>
-                  <h2 className="text-2xl font-semibold mb-4 text-subtitle-black">
-                    Description
-                  </h2>
-                  {<BookDescription description={plainText} />}
+                  {info.description ? (
+                    <>
+                      <h2 className="text-2xl font-semibold mb-4 text-subtitle-black">
+                        Description
+                      </h2>
+                      {<BookDescription description={plainText} />}
+                    </>
+                  ) : (
+                    <p className="text-sm">No description provided</p>
+                  )}
                 </div>
 
                 {/* Book's sale info */}

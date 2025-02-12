@@ -17,10 +17,11 @@ const Dashboard = () => {
     setStartIndex,
     totalItems,
     setTotalItems,
+    page,
+    setPage,
   } = useBooks();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [page, setPage] = useState(1);
 
   // if 'query' exists create the url
   const url = query
@@ -33,8 +34,9 @@ const Dashboard = () => {
     if (data.items) {
       setBooks(data.items);
       setTotalItems(data.totalItems || 0);
+      setPage(page);
     }
-  }, [data, setBooks, setTotalItems]);
+  }, [data, setBooks, setTotalItems, setPage]);
 
   const handleNext = () => {
     if (startIndex + 10 < totalItems) {
@@ -91,14 +93,16 @@ const Dashboard = () => {
           </div>
         </div>
         {data.items && (
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-center mt-6 ">
             <NextPrevBtn
               content={"Prev"}
               action={handlePrev}
               dis={startIndex === 0}
             />
             {page > 1 && (
-              <p className="mx-6 font-bold text-fourth-color">{page}</p>
+              <p className="font-bold text-fourth-color transition-all duration-200">
+                {page}
+              </p>
             )}
             <NextPrevBtn
               content={"Next"}

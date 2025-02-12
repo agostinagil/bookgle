@@ -15,6 +15,8 @@ export const BooksProvider = ({ children }) => {
   //   total number of books available according to the api
   const [totalItems, setTotalItems] = useState(0);
 
+  const [page, setPage] = useState(1);
+
   return (
     <Provider
       value={{
@@ -26,6 +28,8 @@ export const BooksProvider = ({ children }) => {
         setStartIndex,
         totalItems,
         setTotalItems,
+        page,
+        setPage,
       }}
     >
       {children}
