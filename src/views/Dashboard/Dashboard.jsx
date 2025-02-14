@@ -4,6 +4,7 @@ import useFetch from "../../hooks/useFetch";
 import Card from "../../components/Card";
 import { useBooks } from "../../contexts/BookContext";
 import NextPrevBtn from "../../components/NextPrevBtn";
+import Loading from "../../components/Loading";
 
 const api_key = import.meta.env.VITE_BOOKS_KEY;
 
@@ -84,7 +85,8 @@ const Dashboard = () => {
           </button>
         </div>
         <div>
-          {loading && <p>Cargando...</p>}
+          {/* remove !books otherwise Loading component doesn't render  */}
+          {!books && loading && <Loading />}
           {error && <p>{error}</p>}
           <div className="p-2 grid grid-cols-2 sm:grid sm:grid-cols-3">
             {books.map((book) => (
