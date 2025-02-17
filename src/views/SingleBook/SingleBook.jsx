@@ -2,10 +2,11 @@ import { useParams } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import BookDescription from "../../components/BookDescription";
 import Divisor from "../../components/Divisor";
+import Loading from "../../components/Loading";
 
 const SingleBook = () => {
   const { id } = useParams();
-  const { data, setError, error } = useFetch(
+  const { data, setError, error, loading } = useFetch(
     id ? `https://www.googleapis.com/books/v1/volumes/${id}` : ""
   );
   const plainText = data[0]?.volumeInfo?.description?.replace(/<[^>]*>?/gm, "");
@@ -41,7 +42,7 @@ const SingleBook = () => {
           </p>
 
           {error && <p>{error}</p>}
-          {data.length > 0 && info ? (
+          {data.length > 0 && info && (
             <>
               {/* Book Cover */}
               <div className="h-[375px] w-11/12 mx-auto rounded-lg bg-white self-center flex items-center justify-center">
@@ -182,9 +183,8 @@ const SingleBook = () => {
                 </div>
               </div>
             </>
-          ) : (
-            <p>Loading...</p>
           )}
+          {loading && <Loading />}
         </main>
       </div>
     </>

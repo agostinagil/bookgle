@@ -85,8 +85,8 @@ const Dashboard = () => {
           </button>
         </div>
         <div>
-          {/* remove !books otherwise Loading component doesn't render  */}
-          {!books && loading && <Loading />}
+          {/* remove !books otherwise Loading component doesn't render */}
+          {loading && <Loading />}
           {error && <p>{error}</p>}
           <div className="p-2 grid grid-cols-2 sm:grid sm:grid-cols-3">
             {books.map((book) => (

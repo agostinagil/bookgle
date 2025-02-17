@@ -12,6 +12,9 @@ const useFetch = (url) => {
       setError("");
       // setData([]);
 
+      const minLoadTime = 2000;
+      const startTime = Date.now();
+
       try {
         const response = await axios.get(url, {
           headers: { Accept: "application/json" },
@@ -28,7 +31,12 @@ const useFetch = (url) => {
         setError("There was a problem performing the search. Please try again");
         console.error(error);
       } finally {
-        setLoading(false);
+        const elapsedTime = Date.now() - startTime;
+        const remaininTime = Math.max(0, minLoadTime - elapsedTime);
+
+        setTimeout(() => {
+          setLoading(false);
+        }, remaininTime);
       }
     };
 
