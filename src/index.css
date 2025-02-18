@@ -31,6 +31,7 @@ body {
   display: flex;
   overflow-x: hidden;
   place-items: center;
+  @apply font-sans;
 }
 
 h1 {

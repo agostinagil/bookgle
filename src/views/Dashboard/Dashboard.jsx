@@ -29,7 +29,7 @@ const Dashboard = () => {
     ? `https://www.googleapis.com/books/v1/volumes?q=${query}&startIndex=${startIndex}&maxResults=10&key=${api_key}`
     : null;
 
-  const { data, error, loading, setError } = useFetch(url);
+  const { data, error, setLoading, loading, setError } = useFetch(url);
 
   useEffect(() => {
     if (data.items) {
@@ -37,6 +37,7 @@ const Dashboard = () => {
       setTotalItems(data.totalItems || 0);
       setPage(page);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, setBooks, setTotalItems, setPage]);
 
   const handleNext = () => {
@@ -54,11 +55,16 @@ const Dashboard = () => {
   };
 
   const handleSearch = () => {
+    console.log(searchQuery);
     if (!searchQuery.trim()) {
       setError("What do you want to search?");
+      setLoading(false);
     }
-    setQuery(searchQuery);
-    setStartIndex(0);
+    if (searchQuery !== query) {
+      setLoading(true);
+      setQuery(searchQuery);
+      setStartIndex(0);
+    }
   };
 
   return (
@@ -86,15 +92,18 @@ const Dashboard = () => {
         </div>
         <div>
           {/* remove !books otherwise Loading component doesn't render */}
-          {loading && <Loading />}
           {error && <p>{error}</p>}
-          <div className="p-2 grid grid-cols-2 sm:grid sm:grid-cols-3">
-            {books.map((book) => (
-              <Card key={book.id} book={book} />
-            ))}
-          </div>
+          {loading ? (
+            <Loading />
+          ) : (
+            <div className="p-2 grid grid-cols-2 sm:grid sm:grid-cols-3">
+              {books.map((book) => (
+                <Card key={book.id} book={book} />
+              ))}
+            </div>
+          )}
         </div>
-        {data.items && (
+        {data.items && !loading && (
           <div className="flex justify-center mt-6 ">
             <NextPrevBtn
               content={"Prev"}

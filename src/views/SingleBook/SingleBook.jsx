@@ -3,10 +3,11 @@ import useFetch from "../../hooks/useFetch";
 import BookDescription from "../../components/BookDescription";
 import Divisor from "../../components/Divisor";
 import Loading from "../../components/Loading";
+import { useEffect } from "react";
 
 const SingleBook = () => {
   const { id } = useParams();
-  const { data, setError, error, loading } = useFetch(
+  const { data, setError, error, loading, setLoading } = useFetch(
     id ? `https://www.googleapis.com/books/v1/volumes/${id}` : ""
   );
   const plainText = data[0]?.volumeInfo?.description?.replace(/<[^>]*>?/gm, "");
@@ -15,6 +16,10 @@ const SingleBook = () => {
   const currency = data[0]?.saleInfo?.listPrice?.currencyCode;
   const buyLink = data[0]?.saleInfo?.buyLink;
   const previewLink = data[0]?.accessInfo?.webReaderLink;
+
+  useEffect(() => {
+    setLoading(true);
+  }, []);
 
   if (!id) setError("No book ID provided");
 
@@ -42,7 +47,7 @@ const SingleBook = () => {
           </p>
 
           {error && <p>{error}</p>}
-          {data.length > 0 && info && (
+          {data.length > 0 && info && !loading && (
             <>
               {/* Book Cover */}
               <div className="h-[375px] w-11/12 mx-auto rounded-lg bg-white self-center flex items-center justify-center">

@@ -8,7 +8,6 @@ const useFetch = (url) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       setError("");
       // setData([]);
 
@@ -43,7 +42,7 @@ const useFetch = (url) => {
     if (url) fetchData();
   }, [url]);
 
-  return { data, error, loading, setError };
+  return { data, error, setLoading, loading, setError };
 };
 
 export default useFetch;

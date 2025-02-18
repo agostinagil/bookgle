@@ -6,11 +6,12 @@ export default {
     extend: {
       colors: {
         "main-color": "#ff9b5e",
-        "second-color": "#fd725b",
+        "second-color": "#fb7666",
         "third-color": "#ffe0c5",
         "fourth-color": "#f12379",
         "btn-color": "#fe4475",
         "btn-color-darker": "#ee4571",
+        "title-white": "#FEF3E7",
         "title-black": "#242424",
         "subtitle-black": "#2a2a2a",
         "card-bg": "#fffafa",
@@ -21,6 +22,8 @@ export default {
       backgroundImage: {
         "main-gradient":
           "linear-gradient(0deg, rgba(255,224,197,1) 0%, rgba(255,155,94,1) 100%)",
+        "second-gradient":
+          " linear-gradient(180deg, rgba(251,118,102,1) 0%, rgba(255,155,94,1) 60%);",
       },
       borderRadius: {
         "main-bg": "75px",
@@ -31,6 +34,10 @@ export default {
       },
       borderWidth: {
         "divisor-w": "0.8px",
+      },
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+        title: ["Luckiest Guy", "sans-serif"],
       },
       spacing: {
         card: "18rem",
