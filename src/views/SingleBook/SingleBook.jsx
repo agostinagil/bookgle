@@ -4,6 +4,7 @@ import BookDescription from "../../components/BookDescription";
 import Divisor from "../../components/Divisor";
 import Loading from "../../components/Loading";
 import { useEffect } from "react";
+import noImg from "../../assets/no-img.png";
 
 const SingleBook = () => {
   const { id } = useParams();
@@ -51,11 +52,19 @@ const SingleBook = () => {
             <>
               {/* Book Cover */}
               <div className="h-[375px] w-11/12 mx-auto rounded-lg bg-white self-center flex items-center justify-center">
-                <img
-                  src={info.imageLinks.smallThumbnail}
-                  alt="Book tape photo"
-                  className="h-[90%] shadow-card"
-                />
+                {info.imageLinks?.smallThumbnail ? (
+                  <img
+                    src={info.imageLinks?.smallThumbnail}
+                    alt="Book tape photo"
+                    className="h-[90%] shadow-card"
+                  />
+                ) : (
+                  <img
+                    src={noImg}
+                    alt="Book tape photo"
+                    className="h-[90%] shadow-card"
+                  />
+                )}
               </div>
               <div className="p-5">
                 {data.length && info.authors ? (
@@ -79,13 +88,11 @@ const SingleBook = () => {
                 <Divisor />
 
                 <div>
+                  <h2 className="text-2xl font-semibold mb-4 text-subtitle-black">
+                    Description
+                  </h2>
                   {info.description ? (
-                    <>
-                      <h2 className="text-2xl font-semibold mb-4 text-subtitle-black">
-                        Description
-                      </h2>
-                      {<BookDescription description={plainText} />}
-                    </>
+                    <BookDescription description={plainText} />
                   ) : (
                     <p className="text-sm">No description provided</p>
                   )}
