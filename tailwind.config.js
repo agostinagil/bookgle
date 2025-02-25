@@ -17,6 +17,7 @@ export default {
         "card-bg": "#fffafa",
         "bg-color": "#FEF3E7",
         "link-color": "#646cff",
+        "error-color": "#e15151",
         divisor: "#eeeeee",
       },
       backgroundImage: {

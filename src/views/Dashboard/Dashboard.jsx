@@ -5,6 +5,7 @@ import Card from "../../components/Card";
 import { useBooks } from "../../contexts/BookContext";
 import NextPrevBtn from "../../components/NextPrevBtn";
 import Loading from "../../components/Loading";
+import SelectLanguage from "./SelectLanguage";
 
 const api_key = import.meta.env.VITE_BOOKS_KEY;
 
@@ -23,10 +24,13 @@ const Dashboard = () => {
   } = useBooks();
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [language, setLanguage] = useState("");
 
   // if 'query' exists create the url
   const url = query
-    ? `https://www.googleapis.com/books/v1/volumes?q=${query}&startIndex=${startIndex}&maxResults=10&key=${api_key}`
+    ? `https://www.googleapis.com/books/v1/volumes?q=${query}${
+        language ? `&langRestrict=${language}` : ""
+      }&startIndex=${startIndex}&maxResults=10&key=${api_key}`
     : null;
 
   const { data, error, setLoading, loading, setError } = useFetch(url);
@@ -70,7 +74,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="min-h-screen w-screen bg-bg-color">
-        <div className="flex align-center justify-evenly pt-24 ">
+        <div className="flex align-center justify-evenly pt-24 mb-4">
           <input
             type="text"
             placeholder="Search"
@@ -90,6 +94,9 @@ const Dashboard = () => {
             Search
           </button>
         </div>
+
+        <SelectLanguage setLanguage={setLanguage} />
+
         <div>
           {/* remove !books otherwise Loading component doesn't render */}
           {error && <p>{error}</p>}
