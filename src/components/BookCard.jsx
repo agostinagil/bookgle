@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import noImg from "../assets/no-img.png";
 
-const Card = ({ book }) => {
+const BookCard = ({ book }) => {
   const navigate = useNavigate();
 
   const handleSearch = () => {
@@ -48,4 +48,4 @@ const Card = ({ book }) => {
   );
 };
 
-export default Card;
+export default BookCard;

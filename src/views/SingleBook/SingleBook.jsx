@@ -6,6 +6,7 @@ import Loading from "../../components/Loading";
 import { useEffect } from "react";
 import noImg from "../../assets/no-img.png";
 import BackTo from "../../components/BackTo";
+import Error from "../../utils/FetchError";
 
 const SingleBook = () => {
   const { id } = useParams();
@@ -28,10 +29,10 @@ const SingleBook = () => {
   return (
     <>
       <div className="min-h-screen w-screen bg-no-repeat bg-cover bg-center">
+        {error && <Error error={error} page={"Books"} />}
         <main className="pt-24">
-          <BackTo text={"Back to books"} />
+          {!error && <BackTo text={"Back to books"} url="/dashboard" />}
 
-          {error && <p>{error}</p>}
           {data.length > 0 && info && !loading && (
             <>
               {/* Book Cover */}

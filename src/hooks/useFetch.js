@@ -3,7 +3,7 @@ import axios from "axios";
 
 const useFetch = (url) => {
   const [data, setData] = useState([]);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -26,9 +26,13 @@ const useFetch = (url) => {
         } else {
           setError("No results found");
         }
-      } catch (error) {
-        setError("There was a problem performing the search. Please try again");
-        console.error(error);
+      } catch (e) {
+        const err = {
+          msg: "There was a problem performing the search. Please try it again.",
+          e: e.message,
+        };
+
+        setError(err);
       } finally {
         const elapsedTime = Date.now() - startTime;
         const remaininTime = Math.max(0, minLoadTime - elapsedTime);

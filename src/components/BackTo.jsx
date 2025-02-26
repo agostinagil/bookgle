@@ -1,8 +1,15 @@
+import { useNavigate } from "react-router-dom";
+
 /* eslint-disable react/prop-types */
-const BackTo = ({ text }) => {
+const BackTo = ({ text, url }) => {
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    navigate(`${url}`);
+  };
   return (
     <p
-      onClick={() => window.history.back()}
+      onClick={handleNavigation}
       className="flex pl-5 h-8 items-center ml-1 cursor-pointer text-link-color hover:text-main-color "
     >
       <svg
