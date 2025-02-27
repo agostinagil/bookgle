@@ -15,6 +15,8 @@ export const BooksProvider = ({ children }) => {
   //   total number of books available according to the api
   const [totalItems, setTotalItems] = useState(0);
 
+  const [language, setLanguage] = useState("");
+
   const [page, setPage] = useState(1);
 
   return (
@@ -30,6 +32,8 @@ export const BooksProvider = ({ children }) => {
         setTotalItems,
         page,
         setPage,
+        language,
+        setLanguage,
       }}
     >
       {children}

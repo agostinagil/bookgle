@@ -15,16 +15,19 @@ const SearchBook = () => {
     setTotalItems,
     page,
     setPage,
+    language,
+    setLanguage,
   } = useBooks();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [language, setLanguage] = useState("");
 
   // if 'query' exists create the url
   const url = query
-    ? `https://www.googleapis.com/books/v1/volumes?q=${query}${
+    ? `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
+        query
+      )}${
         language ? `&langRestrict=${language}` : ""
-      }&startIndex=${startIndex}&maxResults=10&key=${api_key}`
+      }&startIndex=${startIndex}&maxResults=10&printType=books&key=${api_key}`
     : null;
 
   const { data, setLoading } = useFetch(url);
@@ -34,9 +37,10 @@ const SearchBook = () => {
       setBooks(data.items);
       setTotalItems(data.totalItems || 0);
       setPage(page);
+      setLanguage(language);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, setBooks, setTotalItems, setPage]);
+  }, [data, setBooks, setTotalItems, setPage, setLanguage]);
 
   const handleSearch = () => {
     console.log(searchQuery);

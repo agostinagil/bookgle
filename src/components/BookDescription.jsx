@@ -25,7 +25,9 @@ const BookDescription = ({ description }) => {
           expanded ? "" : "line-clamp-6"
         } transition-all duration-300 text-sm`}
         ref={descriptionRef}
-      ></div>
+      >
+        {description}
+      </div>
 
       {showBtn && (
         <button
