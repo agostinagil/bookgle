@@ -18,7 +18,7 @@ const BookCard = ({ book }) => {
         <img
           src={book.volumeInfo.imageLinks?.thumbnail || noImg}
           alt="Book cover"
-          className="mx-auto rounded-md h-full shadow-book"
+          className="mx-auto rounded-md h-full shadow-book max-w-[120px]"
         />
       </div>
 

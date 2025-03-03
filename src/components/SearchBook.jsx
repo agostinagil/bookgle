@@ -13,7 +13,6 @@ const SearchBook = () => {
     startIndex,
     setStartIndex,
     setTotalItems,
-    page,
     setPage,
     language,
     setLanguage,
@@ -23,20 +22,20 @@ const SearchBook = () => {
 
   // if 'query' exists create the url
   const url = query
-    ? `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
+    ? `https://www.googleapis.com/books/v1/volumes?q=intitle:"${encodeURIComponent(
         query
-      )}${
+      )}"${
         language ? `&langRestrict=${language}` : ""
       }&startIndex=${startIndex}&maxResults=10&printType=books&key=${api_key}`
     : null;
 
+  // console.log(url);
   const { data, setLoading } = useFetch(url);
 
   useEffect(() => {
     if (data.items) {
       setBooks(data.items);
       setTotalItems(data.totalItems || 0);
-      setPage(page);
       setLanguage(language);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
