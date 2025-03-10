@@ -22,14 +22,13 @@ const SearchBook = () => {
 
   // if 'query' exists create the url
   const url = query
-    ? `https://www.googleapis.com/books/v1/volumes?q=intitle:"${encodeURIComponent(
+    ? `https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(
         query
-      )}"${
+      )}${
         language ? `&langRestrict=${language}` : ""
       }&startIndex=${startIndex}&maxResults=10&printType=books&key=${api_key}`
     : null;
 
-  // console.log(url);
   const { data, setLoading } = useFetch(url);
 
   useEffect(() => {

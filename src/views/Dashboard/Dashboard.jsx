@@ -7,10 +7,44 @@ import SearchBook from "../../components/SearchBook";
 import BookCard from "../../components/BookCard";
 
 const Dashboard = () => {
-  const { books, startIndex, setStartIndex, totalItems, page, setPage } =
-    useBooks();
+  const {
+    books,
+    startIndex,
+    setStartIndex,
+    totalItems,
+    page,
+    query,
+    setPage,
+    language,
+  } = useBooks();
 
   const { error, loading } = useFetch();
+
+  const normalizeText = (text) => {
+    return text
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  };
+
+  const filteredBooksByQuery = books.filter((book) => {
+    const normalizedTitle = normalizeText(book.volumeInfo?.title || "");
+    const normalizedQuery = normalizeText(query);
+    return normalizedTitle === normalizedQuery;
+  });
+
+  const filteredBooksByLanguage = filteredBooksByQuery.filter(
+    (book) => book.volumeInfo?.language === language
+  );
+
+  let booksToRender = [];
+
+  if (language) {
+    booksToRender =
+      filteredBooksByLanguage.length > 0 ? filteredBooksByLanguage : null;
+  } else {
+    booksToRender = books.length > 0 ? books : null;
+  }
 
   const handleNext = () => {
     if (startIndex + 10 < totalItems) {
@@ -41,9 +75,18 @@ const Dashboard = () => {
             <Loading />
           ) : (
             <div className="p-2 grid grid-cols-2 sm:grid sm:grid-cols-3">
-              {books.map((book) => (
-                <BookCard key={book.id} book={book} />
-              ))}
+              {booksToRender ? (
+                booksToRender.map((book) => (
+                  <BookCard key={book.id} book={book} />
+                ))
+              ) : (
+                <p>no res</p>
+              )}
+              {/* {language && filteredBooksByLanguage.length > 0 ? (
+                books.map((book) => <BookCard key={book.id} book={book} />)
+              ) : (
+                <p>no results</p>
+              )} */}
             </div>
           )}
         </div>
