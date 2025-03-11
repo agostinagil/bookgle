@@ -12,6 +12,7 @@ const Dashboard = () => {
     startIndex,
     setStartIndex,
     totalItems,
+    setTotalItems,
     page,
     query,
     setPage,
@@ -40,10 +41,15 @@ const Dashboard = () => {
   let booksToRender = [];
 
   if (language) {
+    setTotalItems(booksToRender.length);
+
     booksToRender =
       filteredBooksByLanguage.length > 0 ? filteredBooksByLanguage : null;
   } else {
-    booksToRender = books.length > 0 ? books : null;
+    setTotalItems(booksToRender.length);
+
+    booksToRender =
+      filteredBooksByQuery.length > 0 ? filteredBooksByQuery : null;
   }
 
   const handleNext = () => {

@@ -1,8 +1,14 @@
 /* eslint-disable react/prop-types */
-import languages from "../../../languages.json";
+import languages from "../../languages.json";
 
 const SelectLanguage = ({ setLanguage }) => {
-  const handleSelect = (e) => setLanguage(e.target.value);
+  const handleSelect = (e) => {
+    if (e.target.value === "default") {
+      setLanguage("");
+    } else {
+      setLanguage(e.target.value);
+    }
+  };
 
   return (
     <div className="flex justify-center">
@@ -14,6 +20,7 @@ const SelectLanguage = ({ setLanguage }) => {
         <option value="" disabled selected>
           Select language
         </option>
+        <option value="default">Default</option>
         {languages.map(({ code, name, flag }) => (
           <option key={code} value={code}>
             {name} {flag}

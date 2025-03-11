@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useBooks } from "../contexts/BookContext";
 import useFetch from "../hooks/useFetch";
-import SelectLanguage from "../views/Dashboard/SelectLanguage";
+import SelectLanguage from "./SelectLanguage";
 
 const api_key = import.meta.env.VITE_BOOKS_KEY;
 
