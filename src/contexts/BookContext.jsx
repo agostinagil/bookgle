@@ -19,6 +19,8 @@ export const BooksProvider = ({ children }) => {
 
   const [page, setPage] = useState(1);
 
+  const [booksToRender, setBooksToRender] = useState([]);
+
   return (
     <Provider
       value={{
@@ -34,6 +36,8 @@ export const BooksProvider = ({ children }) => {
         setPage,
         language,
         setLanguage,
+        booksToRender,
+        setBooksToRender,
       }}
     >
       {children}

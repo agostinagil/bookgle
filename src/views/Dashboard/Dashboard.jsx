@@ -5,52 +5,20 @@ import Loading from "../../components/Loading";
 import Error from "../../utils/FetchError";
 import SearchBook from "../../components/SearchBook";
 import BookCard from "../../components/BookCard";
+import NoResults from "../../components/NoResults";
 
 const Dashboard = () => {
   const {
-    books,
+    query,
     startIndex,
     setStartIndex,
     totalItems,
-    setTotalItems,
     page,
-    query,
     setPage,
-    language,
+    booksToRender,
   } = useBooks();
 
   const { error, loading } = useFetch();
-
-  const normalizeText = (text) => {
-    return text
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase();
-  };
-
-  const filteredBooksByQuery = books.filter((book) => {
-    const normalizedTitle = normalizeText(book.volumeInfo?.title || "");
-    const normalizedQuery = normalizeText(query);
-    return normalizedTitle === normalizedQuery;
-  });
-
-  const filteredBooksByLanguage = filteredBooksByQuery.filter(
-    (book) => book.volumeInfo?.language === language
-  );
-
-  let booksToRender = [];
-
-  if (language) {
-    setTotalItems(booksToRender.length);
-
-    booksToRender =
-      filteredBooksByLanguage.length > 0 ? filteredBooksByLanguage : null;
-  } else {
-    setTotalItems(booksToRender.length);
-
-    booksToRender =
-      filteredBooksByQuery.length > 0 ? filteredBooksByQuery : null;
-  }
 
   const handleNext = () => {
     if (startIndex + 10 < totalItems) {
@@ -80,25 +48,22 @@ const Dashboard = () => {
           {loading ? (
             <Loading />
           ) : (
-            <div className="p-2 grid grid-cols-2 sm:grid sm:grid-cols-3">
-              {booksToRender ? (
-                booksToRender.map((book) => (
-                  <BookCard key={book.id} book={book} />
-                ))
+            <>
+              {query && booksToRender.length === 0 ? (
+                <NoResults />
               ) : (
-                <p>no res</p>
+                <div>
+                  {booksToRender.map((book) => (
+                    <BookCard key={book.id} book={book} />
+                  ))}
+                </div>
               )}
-              {/* {language && filteredBooksByLanguage.length > 0 ? (
-                books.map((book) => <BookCard key={book.id} book={book} />)
-              ) : (
-                <p>no results</p>
-              )} */}
-            </div>
+            </>
           )}
         </div>
 
         {/* Prev and Next buttons */}
-        {books.length > 0 && !loading && (
+        {booksToRender.length > 0 && !loading && (
           <div className="flex justify-center mt-6 ">
             <NextPrevBtn
               content={"Prev"}

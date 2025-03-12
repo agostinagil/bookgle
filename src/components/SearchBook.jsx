@@ -16,6 +16,7 @@ const SearchBook = () => {
     setPage,
     language,
     setLanguage,
+    setBooksToRender,
   } = useBooks();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -31,17 +32,38 @@ const SearchBook = () => {
 
   const { data, setLoading } = useFetch(url);
 
+  const normalizeText = (text) => {
+    return text
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  };
+
   useEffect(() => {
     if (data.items) {
       setBooks(data.items);
-      setTotalItems(data.totalItems || 0);
+      // setTotalItems(data.totalItems || 0);
       setLanguage(language);
+
+      const filteredBooksByQuery = data.items.filter((book) => {
+        const normalizedTitle = normalizeText(book.volumeInfo?.title || "");
+        const normalizedQuery = normalizeText(query);
+        return normalizedTitle === normalizedQuery;
+      });
+
+      const filteredBooksByLanguage = language
+        ? filteredBooksByQuery.filter(
+            (book) => book.volumeInfo?.language === language
+          )
+        : filteredBooksByQuery;
+
+      setBooksToRender(filteredBooksByLanguage);
+      setTotalItems(filteredBooksByLanguage.length);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, setBooks, setTotalItems, setPage, setLanguage]);
+  }, [data, setBooks, setTotalItems, setPage, setLanguage, setBooksToRender]);
 
   const handleSearch = () => {
-    console.log(searchQuery);
     if (!searchQuery.trim()) {
       return;
     }
