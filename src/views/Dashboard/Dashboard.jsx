@@ -35,55 +35,53 @@ const Dashboard = () => {
   };
 
   return (
-    <>
-      <div className="min-h-screen w-screen bg-bg-color">
-        {/* Error */}
-        {error && <Error error={error} page={"home"} url={"/"} />}
+    <main className="min-h-screen w-screen bg-bg-color">
+      {/* Error */}
+      {error && <Error error={error} page={"home"} url={"/"} />}
 
-        {/* Search book  */}
-        <SearchBook />
+      {/* Search book  */}
+      <SearchBook />
 
-        {/* Loading and Cards content */}
-        <div>
-          {loading ? (
-            <Loading />
-          ) : (
-            <>
-              {query && booksToRender.length === 0 ? (
-                <NoResults />
-              ) : (
-                <div>
-                  {booksToRender.map((book) => (
-                    <BookCard key={book.id} book={book} />
-                  ))}
-                </div>
-              )}
-            </>
-          )}
-        </div>
-
-        {/* Prev and Next buttons */}
-        {booksToRender.length > 0 && !loading && (
-          <div className="flex justify-center mt-6 ">
-            <NextPrevBtn
-              content={"Prev"}
-              action={handlePrev}
-              dis={startIndex === 0}
-            />
-            {page > 1 && (
-              <p className="font-bold text-fourth-color transition-all duration-200">
-                {page}
-              </p>
+      {/* Loading and Cards content */}
+      <section>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            {query && booksToRender.length === 0 ? (
+              <NoResults />
+            ) : (
+              <div className="p-2 grid grid-cols-2 sm:grid sm:grid-cols-3">
+                {booksToRender.map((book) => (
+                  <BookCard key={book.id} book={book} />
+                ))}
+              </div>
             )}
-            <NextPrevBtn
-              content={"Next"}
-              action={handleNext}
-              dis={startIndex + 10 >= totalItems}
-            />
-          </div>
+          </>
         )}
-      </div>
-    </>
+      </section>
+
+      {/* Prev and Next buttons */}
+      {booksToRender.length > 0 && !loading && (
+        <div className="flex justify-center mt-6 ">
+          <NextPrevBtn
+            content={"Prev"}
+            action={handlePrev}
+            dis={startIndex === 0}
+          />
+          {page > 1 && (
+            <p className="font-bold text-fourth-color transition-all duration-200">
+              {page}
+            </p>
+          )}
+          <NextPrevBtn
+            content={"Next"}
+            action={handleNext}
+            dis={startIndex + 10 >= totalItems}
+          />
+        </div>
+      )}
+    </main>
   );
 };
 
