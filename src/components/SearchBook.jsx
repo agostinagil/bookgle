@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useBooks } from "../contexts/BookContext";
+import { useBooksContext } from "../contexts/BookContext";
 import useFetch from "../hooks/useFetch";
 import SelectLanguage from "./SelectLanguage";
+import { filterBooks } from "../utils/filterBooks";
 
 const api_key = import.meta.env.VITE_BOOKS_KEY;
 
@@ -12,12 +13,11 @@ const SearchBook = () => {
     setQuery,
     startIndex,
     setStartIndex,
-    setTotalItems,
-    setPage,
     language,
     setLanguage,
     setBooksToRender,
-  } = useBooks();
+    setLoading,
+  } = useBooksContext();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [queryType, setQueryType] = useState("intitle");
@@ -30,83 +30,40 @@ const SearchBook = () => {
         language ? `&langRestrict=${language}` : ""
       }&startIndex=${startIndex}&maxResults=10&printType=books&key=${api_key}`
     : null;
-  const { data, setLoading } = useFetch(url);
-
-  const normalizeText = (input) => {
-    if (Array.isArray(input)) {
-      return input.map((text) =>
-        text
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .toLowerCase()
-      );
-    }
-    return input
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase();
-  };
+  const { data } = useFetch(url);
 
   useEffect(() => {
-    if (data.items) {
-      console.log(data.items);
+    console.log(url);
+
+    if (data?.items?.length) {
+      const filteredBooks = filterBooks(
+        data,
+        queryType,
+        query,
+        language,
+        setQueryType
+      );
       setBooks(data.items);
-      // setTotalItems(data.totalItems || 0);
+      setBooksToRender(filteredBooks);
       setLanguage(language);
-      console.log(url);
 
-      const normalizedQuery = normalizeText(query);
-
-      const filteredBooksByQuery = data.items.filter((book) => {
-        const normalizedTitle = normalizeText(book.volumeInfo?.title || "");
-        return normalizedTitle === normalizedQuery;
-      });
-      const filteredByAuthor = data.items.filter((book) => {
-        const authors = book.volumeInfo?.authors || [];
-        const normalizedAuthors = authors.map((author) =>
-          normalizeText(author)
-        );
-        return normalizedAuthors.some((author) => author === normalizedQuery);
-      });
-
-      if (language && queryType === "intitle") {
-        const filteredBooksLangTitle = filteredBooksByQuery.filter(
-          (book) => book.volumeInfo?.language === language
-        );
-        setBooksToRender(filteredBooksLangTitle);
-        setTotalItems(filteredBooksLangTitle.length);
-      } else if (language && queryType === "inauthor") {
-        const filteredBooksLangAuthor = filteredByAuthor.filter(
-          (book) => book.volumeInfo?.language === language
-        );
-        setBooksToRender(filteredBooksLangAuthor);
-        setTotalItems(filteredBooksLangAuthor.length);
-      } else if (queryType === "inauthor" && !language) {
-        console.log(filteredByAuthor);
-        setBooksToRender(filteredByAuthor);
-        setTotalItems(filteredByAuthor.length);
-      } else {
-        setBooksToRender(filteredBooksByQuery);
-        setTotalItems(filteredBooksByQuery.length);
+      if (filteredBooks.length === 0 && queryType === "intitle") {
+        setQueryType("inauthor"); // Si después de filtrar no hay resultados, cambia a autor
       }
     } else if (queryType === "intitle" && searchQuery) {
       setQueryType("inauthor");
-      console.log(url);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, setBooks, setTotalItems, setPage, setLanguage, setBooksToRender]);
-
-  useEffect(() => {});
+  }, [data, queryType]);
 
   const handleSearch = () => {
-    if (!searchQuery.trim()) {
-      return;
-    }
+    if (!searchQuery.trim()) return;
+
     if (searchQuery !== query) {
+      setQueryType("intitle");
       setLoading(true);
       setQuery(searchQuery);
       setStartIndex(0);
-      setQueryType("intitle");
     }
   };
   return (

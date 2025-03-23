@@ -1,8 +1,8 @@
 import useFetch from "../../hooks/useFetch";
-import { useBooks } from "../../contexts/BookContext";
+import { useBooksContext } from "../../contexts/BookContext";
 import NextPrevBtn from "../../components/NextPrevBtn";
 import Loading from "../../components/Loading";
-import Error from "../../utils/FetchError";
+import Error from "../../components/FetchError";
 import SearchBook from "../../components/SearchBook";
 import BookCard from "../../components/BookCard";
 import NoResults from "../../components/NoResults";
@@ -16,7 +16,7 @@ const Dashboard = () => {
     page,
     setPage,
     booksToRender,
-  } = useBooks();
+  } = useBooksContext();
 
   const { error, loading } = useFetch();
 
@@ -36,9 +36,6 @@ const Dashboard = () => {
 
   return (
     <main className="min-h-screen w-screen bg-bg-color">
-      {/* Error */}
-      {error && <Error error={error} page={"home"} url={"/"} />}
-
       {/* Search book  */}
       <SearchBook />
 
@@ -81,6 +78,7 @@ const Dashboard = () => {
           />
         </div>
       )}
+      {error && <Error error={error} page={"home"} url={"/"} />}
     </main>
   );
 };

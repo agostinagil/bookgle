@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useBooksContext } from "../contexts/BookContext";
 
 const useFetch = (url) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const { loading, setLoading } = useBooksContext();
 
   useEffect(() => {
     const fetchData = async () => {

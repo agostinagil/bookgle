@@ -21,6 +21,8 @@ export const BooksProvider = ({ children }) => {
 
   const [booksToRender, setBooksToRender] = useState([]);
 
+  const [loading, setLoading] = useState(false);
+
   return (
     <Provider
       value={{
@@ -38,6 +40,8 @@ export const BooksProvider = ({ children }) => {
         setLanguage,
         booksToRender,
         setBooksToRender,
+        loading,
+        setLoading,
       }}
     >
       {children}
@@ -45,7 +49,7 @@ export const BooksProvider = ({ children }) => {
   );
 };
 
-export const useBooks = () => {
+export const useBooksContext = () => {
   const context = useContext(BooksContext);
   if (!context)
     throw new Error("useBooks must be initialized within BooksProvider");

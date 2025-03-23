@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import BackTo from "../components/BackTo";
+import BackTo from "./BackTo";
 
 const Error = ({ page, error, url }) => {
   return (

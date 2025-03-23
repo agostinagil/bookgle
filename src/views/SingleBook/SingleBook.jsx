@@ -6,11 +6,13 @@ import Loading from "../../components/Loading";
 import { useEffect } from "react";
 import noImg from "../../assets/no-img.png";
 import BackTo from "../../components/BackTo";
-import Error from "../../utils/FetchError";
+import Error from "../../components/FetchError";
+import { useBooksContext } from "../../contexts/BookContext";
 
 const SingleBook = () => {
   const { id } = useParams();
-  const { data, setError, error, loading, setLoading } = useFetch(
+  const { loading, setLoading } = useBooksContext();
+  const { data, setError, error } = useFetch(
     id ? `https://www.googleapis.com/books/v1/volumes/${id}` : ""
   );
   const plainText = data[0]?.volumeInfo?.description?.replace(/<[^>]*>?/gm, "");
