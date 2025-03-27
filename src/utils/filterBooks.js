@@ -15,7 +15,6 @@ const normalizeText = (input) => {
 
 export const filterBooks = (data, queryType, query, language) => {
   if (!data?.items) return [];
-  console.log(data);
 
   const normalizedQuery = normalizeText(query);
   const filteredByTitle = data.items.filter((book) => {

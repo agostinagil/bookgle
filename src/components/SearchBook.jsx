@@ -17,6 +17,7 @@ const SearchBook = () => {
     setLanguage,
     setBooksToRender,
     setLoading,
+    setTotalItems,
   } = useBooksContext();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -46,6 +47,7 @@ const SearchBook = () => {
       setBooks(data.items);
       setBooksToRender(filteredBooks);
       setLanguage(language);
+      setTotalItems(data.totalItems);
 
       if (filteredBooks.length === 0 && queryType === "intitle") {
         setQueryType("inauthor"); // Si después de filtrar no hay resultados, cambia a autor
